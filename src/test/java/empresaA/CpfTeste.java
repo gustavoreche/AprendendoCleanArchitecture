@@ -28,7 +28,7 @@ public class CpfTeste {
 	}
 	
 	@Test
-	public void construtor_cpfVazio_retornoException() {
+	public void insere_cpfVazio_retornoException() {
 		Assert.assertThrows(TextoInvalidoException.class, () -> {
 			String cpf = "";
 			new Cpf().insere(cpf);

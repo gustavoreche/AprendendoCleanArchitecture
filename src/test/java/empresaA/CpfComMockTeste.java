@@ -43,7 +43,7 @@ public class CpfComMockTeste {
 	}
 	
 	@Test
-	public void construtor_cpfVazio_retornoException() {
+	public void insere_cpfVazio_retornoException() {
 		Assert.assertThrows(CpfInvalidoException.class, () -> {
 			String cpf = "";
 			Mockito.doReturn(false).when(this.cpf).ehValido(cpf);
