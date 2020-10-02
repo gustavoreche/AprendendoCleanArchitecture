@@ -21,7 +21,7 @@ public class CpfComMockTeste {
 	public void insere_cpfValido_retornoOk() {
 		String cpf = "111.111.111-11";
 		Mockito.doReturn(true).when(this.cpf).ehValido(cpf);
-		Assert.assertEquals(cpf, this.cpf.insere(cpf)); 
+		Assert.assertEquals(cpf, this.cpf.insere(cpf).getNumero()); 
 	}
 	
 	@Test

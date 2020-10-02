@@ -8,7 +8,7 @@ public class CpfTeste {
 	@Test
 	public void insere_cpfValido_retornoOk() {
 		String cpf = "111.111.111-11";
-		Assert.assertEquals(cpf, new Cpf().insere(cpf)); 
+		Assert.assertEquals(cpf, new Cpf().insere(cpf).getNumero()); 
 	}
 	
 	@Test
