@@ -15,10 +15,6 @@ public class FuncionarioBuilder {
 	private Email email;
 	private List<Telefone> telefones = new ArrayList<Telefone>();
 	
-	protected FuncionarioBuilder() {
-
-	}
-	
 	public FuncionarioBuilder(String cpf, String nome) {
 		criaCpf(cpf);
 		criaNome(nome);		
