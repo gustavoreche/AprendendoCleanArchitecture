@@ -1,4 +1,4 @@
-package empresaA;
+package empresaA.dominio.util.exception;
 
 public class ExpressaoRegularInvalidaException extends RuntimeException {
 

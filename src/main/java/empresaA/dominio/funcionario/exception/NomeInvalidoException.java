@@ -1,4 +1,4 @@
-package empresaA;
+package empresaA.dominio.funcionario.exception;
 
 public class NomeInvalidoException extends RuntimeException {
 

@@ -1,7 +1,11 @@
-package empresaA;
+package empresaA.dominio.util;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import empresaA.dominio.util.Cpf;
+import empresaA.dominio.util.exception.CpfInvalidoException;
+import empresaA.dominio.util.exception.TextoInvalidoException;
 
 public class CpfTeste {
 	

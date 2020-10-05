@@ -1,4 +1,6 @@
-package empresaA;
+package empresaA.dominio.util;
+
+import empresaA.dominio.util.exception.TelefoneInvalidoException;
 
 public class Telefone {
 	

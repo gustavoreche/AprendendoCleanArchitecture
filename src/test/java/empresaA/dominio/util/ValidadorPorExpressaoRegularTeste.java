@@ -1,7 +1,11 @@
-package empresaA;
+package empresaA.dominio.util;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import empresaA.dominio.util.ValidadorPorExpressaoRegular;
+import empresaA.dominio.util.exception.ExpressaoRegularInvalidaException;
+import empresaA.dominio.util.exception.TextoInvalidoException;
 
 
 public class ValidadorPorExpressaoRegularTeste {

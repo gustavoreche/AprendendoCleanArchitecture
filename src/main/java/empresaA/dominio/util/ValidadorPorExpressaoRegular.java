@@ -1,4 +1,7 @@
-package empresaA;
+package empresaA.dominio.util;
+
+import empresaA.dominio.util.exception.ExpressaoRegularInvalidaException;
+import empresaA.dominio.util.exception.TextoInvalidoException;
 
 public class ValidadorPorExpressaoRegular {
 	

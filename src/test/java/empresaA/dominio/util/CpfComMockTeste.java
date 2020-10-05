@@ -1,4 +1,4 @@
-package empresaA;
+package empresaA.dominio.util;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -6,6 +6,9 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+
+import empresaA.dominio.util.Cpf;
+import empresaA.dominio.util.exception.CpfInvalidoException;
 
 public class CpfComMockTeste {
 	

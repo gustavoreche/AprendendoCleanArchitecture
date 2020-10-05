@@ -1,4 +1,4 @@
-package empresaA;
+package empresaA.dominio.util.exception;
 
 public class EmailInvalidoException extends RuntimeException {
 
