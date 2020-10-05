@@ -20,16 +20,18 @@ public class Funcionario {
 		this.telefones = funcionarioBuilder.getTelefones();
 	}
 
-	public Cpf getCpf() {
-		return cpf;
+	public String getCpf() {
+		return this.cpf.getNumero();
 	}
 	
 	public String getNome() {
-		return nome;
+		return this.nome;
 	}
 	
-	public Email getEmail() {
-		return email;
+	public String getEmail() {
+		if(this.email != null)
+			return this.email.getEndereco();
+		return "";
 	}
 	
 	public List<Telefone> getTelefones() {

@@ -37,7 +37,7 @@ public class FuncionarioBuilderTeste {
 			.adicionaEmail(this.enderecoEmail)
 			.adicionaTelefone(this.ddd, this.numeroTelefone)
 			.cria();
-		Assert.assertEquals(this.numeroCpf, funcionario.getCpf().getNumero());
+		Assert.assertEquals(this.numeroCpf, funcionario.getCpf());
 	}
 	
 	@Test
