@@ -12,6 +12,7 @@ public class Funcionario {
 	private String nome;
 	private Email email;
 	private List<Telefone> telefones;
+	private String senha;
 	
 	protected Funcionario(FuncionarioBuilder funcionarioBuilder) {
 		this.cpf = funcionarioBuilder.getCpf();
