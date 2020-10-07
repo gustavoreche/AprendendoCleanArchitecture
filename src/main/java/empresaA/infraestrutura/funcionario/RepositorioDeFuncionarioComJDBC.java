@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 
 import empresaA.dominio.funcionario.Funcionario;
 import empresaA.dominio.funcionario.FuncionarioBuilder;
+import empresaA.dominio.funcionario.servicos.CodificadorDeSenha;
 import empresaA.dominio.funcionario.servicos.RepositorioDeFuncionario;
 import empresaA.infraestrutura.funcionario.exception.BuscaFuncionarioException;
 import empresaA.infraestrutura.funcionario.exception.ContrataFuncionarioException;
@@ -31,11 +32,12 @@ public class RepositorioDeFuncionarioComJDBC implements RepositorioDeFuncionario
 	@Override
 	public boolean contrata(Funcionario funcionario) {
 		int posicao = 1;
-		StringBuilder sql = new StringBuilder("INSERT INTO funcionario VALUES (?, ?, ?)");
+		StringBuilder sql = new StringBuilder("INSERT INTO funcionario VALUES (?, ?, ?, ?)");
 		try(PreparedStatement statement = this.conexao.prepareStatement(sql.toString())) {
 			statement.setString(posicao++, funcionario.getCpf());
 			statement.setString(posicao++, funcionario.getNome());
-			statement.setString(posicao++, funcionario.getEmail());								
+			statement.setString(posicao++, funcionario.getEmail());
+			statement.setString(posicao++, funcionario.getSenha());
 			if(!insereNoBanco(statement)) {
 				return false;
 			}
@@ -88,15 +90,16 @@ public class RepositorioDeFuncionarioComJDBC implements RepositorioDeFuncionario
 			String cpfDoBanco = resultadoDaQuery.getString(posicao++);
 			String nome = resultadoDaQuery.getString(posicao++);
 			String email = resultadoDaQuery.getString(posicao++);
-			FuncionarioBuilder funcionarioBuilder = criaFuncionario(cpf, cpfDoBanco, nome, email);
+			String senha = resultadoDaQuery.getString(posicao++);
+			FuncionarioBuilder funcionarioBuilder = criaFuncionario(cpf, cpfDoBanco, nome, email, senha, new CodificadorDeSenhaComMD5());
 			return funcionarioBuilder.cria();
 		} catch (Exception e) {
 			throw new BuscaFuncionarioException(cpf, e.getMessage());
 		}
 	}
 
-	private FuncionarioBuilder criaFuncionario(String cpf, String cpfDoBanco, String nome, String email) {
-		FuncionarioBuilder funcionarioBuilder = new FuncionarioBuilder(cpfDoBanco, nome);
+	private FuncionarioBuilder criaFuncionario(String cpf, String cpfDoBanco, String nome, String email, String senha, CodificadorDeSenha codificador) {
+		FuncionarioBuilder funcionarioBuilder = new FuncionarioBuilder(cpfDoBanco, nome, senha, codificador);
 		if(!email.isEmpty()) {
 			funcionarioBuilder.adicionaEmail(email);
 		}
@@ -123,7 +126,8 @@ public class RepositorioDeFuncionarioComJDBC implements RepositorioDeFuncionario
 				String cpfDoBanco = resultadoDaQuery.getString(posicao++);
 				String nome = resultadoDaQuery.getString(posicao++);
 				String email = resultadoDaQuery.getString(posicao++);
-				FuncionarioBuilder funcionarioBuilder = criaFuncionario(cpfDoBanco, cpfDoBanco, nome, email);
+				String senha = resultadoDaQuery.getString(posicao++);
+				FuncionarioBuilder funcionarioBuilder = criaFuncionario(cpfDoBanco, cpfDoBanco, nome, email, senha, new CodificadorDeSenhaComMD5());
 				listaDeFuncionario.add(funcionarioBuilder.cria());				
 			}
 			return listaDeFuncionario;

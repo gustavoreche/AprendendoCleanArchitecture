@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import empresaA.dominio.funcionario.exception.NomeInvalidoException;
+import empresaA.dominio.funcionario.servicos.CodificadorDeSenha;
 import empresaA.dominio.util.Cpf;
 import empresaA.dominio.util.Email;
+import empresaA.dominio.util.Senha;
 import empresaA.dominio.util.Telefone;
 
 public class FuncionarioBuilder {
@@ -13,11 +15,13 @@ public class FuncionarioBuilder {
 	private Cpf cpf;
 	private String nome;
 	private Email email;
+	private Senha senha;
 	private List<Telefone> telefones = new ArrayList<Telefone>();
 	
-	public FuncionarioBuilder(String cpf, String nome) {
+	public FuncionarioBuilder(String cpf, String nome, String senha, CodificadorDeSenha codificadorDeSenha) {
 		criaCpf(cpf);
-		criaNome(nome);		
+		criaNome(nome);
+		criaSenha(senha, codificadorDeSenha);
 	}
 	
 	protected void criaCpf(String cpf) {
@@ -28,6 +32,10 @@ public class FuncionarioBuilder {
 		if(nome == null || nome.isEmpty())
 			throw new NomeInvalidoException();
 		this.nome = nome;
+	}
+	
+	protected void criaSenha(String senha, CodificadorDeSenha codificadorDeSenha) {
+		this.senha = new Senha(codificadorDeSenha).insere(senha);
 	}
 	
 	public FuncionarioBuilder adicionaEmail(String email) {
@@ -62,6 +70,14 @@ public class FuncionarioBuilder {
 	
 	public String getNome() {
 		return this.nome;
+	}
+	
+	public Senha getSenha() {
+		return this.senha;
+	}
+	
+	protected String getSenhaCodificada() {
+		return this.senha.getSenhaCodificada();
 	}
 	
 	public Email getEmail() {
