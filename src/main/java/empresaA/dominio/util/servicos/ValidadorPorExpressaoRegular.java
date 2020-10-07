@@ -1,4 +1,4 @@
-package empresaA.dominio.util;
+package empresaA.dominio.util.servicos;
 
 import empresaA.dominio.util.exception.ExpressaoRegularInvalidaException;
 import empresaA.dominio.util.exception.TextoInvalidoException;

@@ -1,6 +1,7 @@
 package empresaA.dominio.util;
 
 import empresaA.dominio.util.exception.EmailInvalidoException;
+import empresaA.dominio.util.servicos.ValidadorPorExpressaoRegular;
 
 public class Email {
 	

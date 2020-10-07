@@ -1,6 +1,7 @@
 package empresaA.dominio.util;
 
 import empresaA.dominio.util.exception.CpfInvalidoException;
+import empresaA.dominio.util.servicos.ValidadorPorExpressaoRegular;
 
 public class Cpf {
 

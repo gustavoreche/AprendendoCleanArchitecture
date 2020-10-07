@@ -1,6 +1,8 @@
-package empresaA.dominio.funcionario;
+package empresaA.dominio.funcionario.servicos;
 
 import java.util.List;
+
+import empresaA.dominio.funcionario.Funcionario;
 
 public interface RepositorioDeFuncionario {
 	

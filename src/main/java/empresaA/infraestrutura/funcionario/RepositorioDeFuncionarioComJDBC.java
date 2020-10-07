@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 
 import empresaA.dominio.funcionario.Funcionario;
 import empresaA.dominio.funcionario.FuncionarioBuilder;
-import empresaA.dominio.funcionario.RepositorioDeFuncionario;
+import empresaA.dominio.funcionario.servicos.RepositorioDeFuncionario;
 import empresaA.infraestrutura.funcionario.exception.BuscaFuncionarioException;
 import empresaA.infraestrutura.funcionario.exception.ContrataFuncionarioException;
 import empresaA.infraestrutura.funcionario.exception.DemiteFuncionarioException;
