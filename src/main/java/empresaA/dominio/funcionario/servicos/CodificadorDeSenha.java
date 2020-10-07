@@ -1,6 +1,6 @@
 package empresaA.dominio.funcionario.servicos;
 
-public interface CifradorDeSenha {
+public interface CodificadorDeSenha {
 	
 	String codificaSenha(String senha);
 	
