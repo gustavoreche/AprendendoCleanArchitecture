@@ -38,7 +38,7 @@ public class RepositorioDeFuncionarioComJDBCTeste {
 	
 	@Test
 	public void demite_tudoValido_retornoOk() {
-		Assert.assertTrue(this.repositorio.demite(new FuncionarioBuilder("111.111.111-18", "Gustavo").cria()));
+		Assert.assertTrue(this.repositorio.demite(new FuncionarioBuilder("111.111.111-18", "Gustavo", "1234", new CodificadorDeSenhaComMD5()).cria()));
 	}
 	
 	@Test
@@ -57,7 +57,7 @@ public class RepositorioDeFuncionarioComJDBCTeste {
 	
 	@Test
 	public void contrata_tudoValido_retornoOk() {
-		Funcionario funcionario = new FuncionarioBuilder("111.111.111-18", "Gustavo").cria();
+		Funcionario funcionario = new FuncionarioBuilder("111.111.111-18", "Gustavo", "1234", new CodificadorDeSenhaComMD5()).cria();
 		this.repositorio.demite(funcionario);
 		Assert.assertTrue(this.repositorio.contrata(funcionario));
 	}
@@ -78,7 +78,7 @@ public class RepositorioDeFuncionarioComJDBCTeste {
 	
 	@Test
 	public void buscaPorCpf_tudoValido_retornoOk() {
-		Funcionario funcionario = new FuncionarioBuilder("111.111.111-18", "Gustavo").cria();
+		Funcionario funcionario = new FuncionarioBuilder("111.111.111-18", "Gustavo", "1234", new CodificadorDeSenhaComMD5()).cria();
 		this.repositorio.demite(funcionario);
 		this.repositorio.contrata(funcionario);
 		Assert.assertEquals(funcionario.getCpf(), this.repositorio.buscaPorCpf("111.111.111-18").getCpf());
@@ -100,7 +100,7 @@ public class RepositorioDeFuncionarioComJDBCTeste {
 	
 	@Test
 	public void buscaTodosFuncionarios_tudoValido_retornoOk() {
-		Funcionario funcionario = new FuncionarioBuilder("111.111.111-18", "Gustavo").cria();
+		Funcionario funcionario = new FuncionarioBuilder("111.111.111-18", "Gustavo", "1234", new CodificadorDeSenhaComMD5()).cria();
 		this.repositorio.demite(funcionario);
 		this.repositorio.contrata(funcionario);
 		Assert.assertEquals(funcionario.getCpf(), this.repositorio.buscaTodosFuncionarios().get(0).getCpf());

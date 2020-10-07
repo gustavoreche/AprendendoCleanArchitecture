@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import empresaA.dominio.funcionario.Funcionario;
 import empresaA.dominio.funcionario.FuncionarioBuilder;
+import empresaA.infraestrutura.funcionario.CodificadorDeSenhaComMD5;
 import empresaA.infraestrutura.util.exception.SalvaTelefoneException;
 
 public class InsereTelefoneComJDBCTeste {
@@ -31,7 +32,7 @@ public class InsereTelefoneComJDBCTeste {
 	
 	@Before
 	public void iniciaAntesDeCadaTeste() {
-		this.funcionario = new FuncionarioBuilder("111.111.111-18", "Gustavo").cria();
+		this.funcionario = new FuncionarioBuilder("111.111.111-18", "Gustavo", "1234", new CodificadorDeSenhaComMD5()).cria();
 		new DeletaTelefoneComJDBC(conexao).executa(this.funcionario);
 	}
 	

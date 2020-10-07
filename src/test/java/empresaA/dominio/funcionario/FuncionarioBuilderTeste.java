@@ -7,10 +7,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import empresaA.dominio.funcionario.exception.NomeInvalidoException;
+import empresaA.dominio.funcionario.exception.SenhaInvalidaException;
+import empresaA.dominio.funcionario.servicos.CodificadorDeSenha;
 import empresaA.dominio.util.exception.CpfInvalidoException;
 import empresaA.dominio.util.exception.EmailInvalidoException;
 import empresaA.dominio.util.exception.TelefoneInvalidoException;
 import empresaA.dominio.util.exception.TextoInvalidoException;
+import empresaA.infraestrutura.funcionario.CodificadorDeSenhaComMD5;
 
 public class FuncionarioBuilderTeste {
 
@@ -19,6 +22,8 @@ public class FuncionarioBuilderTeste {
 	private String enderecoEmail;
 	private String ddd;
 	private String numeroTelefone;
+	private String senha;
+	private CodificadorDeSenha codificador;
 	private FuncionarioBuilder funcionarioBuilder;
 	
 	@Before
@@ -28,7 +33,9 @@ public class FuncionarioBuilderTeste {
 		this.nome = "Gustavo";
 		this.ddd = "016";
 		this.numeroTelefone = "11111-1111";
-		this.funcionarioBuilder = new FuncionarioBuilder(this.numeroCpf, this.nome);
+		this.senha = "1234";
+		this.codificador = new CodificadorDeSenhaComMD5();
+		this.funcionarioBuilder = new FuncionarioBuilder(this.numeroCpf, this.nome, this.senha, this.codificador);
 	}
 	
 	@Test
@@ -41,9 +48,9 @@ public class FuncionarioBuilderTeste {
 	}
 	
 	@Test
-	public void criandoFuncionario_semEmail_retornoNull() {
+	public void criandoFuncionario_semEmail_retornoVazio() {
 		Funcionario funcionario = this.funcionarioBuilder.cria();
-		Assert.assertNull(funcionario.getEmail());
+		Assert.assertTrue(funcionario.getEmail().isEmpty());
 	}
 	
 	@Test
@@ -63,10 +70,15 @@ public class FuncionarioBuilderTeste {
 	}
 	
 	@Test
+	public void construtor_senhaValida_retornoOk() {
+		Assert.assertEquals(this.codificador.codificaSenha(this.senha), this.funcionarioBuilder.getSenhaCodificada()); 
+	}
+	
+	@Test
 	public void construtor_cpfInvalido_retornoException() {
 		Assert.assertThrows(CpfInvalidoException.class, () -> {
 			this.numeroCpf = "111111111-11";
-			new FuncionarioBuilder(this.numeroCpf, this.nome);
+			new FuncionarioBuilder(this.numeroCpf, this.nome, this.senha, this.codificador);
 		});
 	}
 	
@@ -74,7 +86,7 @@ public class FuncionarioBuilderTeste {
 	public void construtor_cpfVazio_retornoException() {
 		Assert.assertThrows(TextoInvalidoException.class, () -> {
 			this.numeroCpf = "";
-			new FuncionarioBuilder(this.numeroCpf, this.nome);
+			new FuncionarioBuilder(this.numeroCpf, this.nome, this.senha, this.codificador);
 		});
 	}
 	
@@ -82,7 +94,15 @@ public class FuncionarioBuilderTeste {
 	public void construtor_nomeVazio_retornoException() {
 		Assert.assertThrows(NomeInvalidoException.class, () -> {
 			this.nome = "";
-			new FuncionarioBuilder(this.numeroCpf, this.nome);
+			new FuncionarioBuilder(this.numeroCpf, this.nome, this.senha, this.codificador);
+		});
+	}
+	
+	@Test
+	public void construtor_senhaVazia_retornoException() {
+		Assert.assertThrows(SenhaInvalidaException.class, () -> {
+			this.senha = "";
+			new FuncionarioBuilder(this.numeroCpf, this.nome, this.senha, this.codificador);
 		});
 	}
 	
@@ -90,7 +110,7 @@ public class FuncionarioBuilderTeste {
 	public void construtor_cpfNulo_retornoException() {
 		Assert.assertThrows(CpfInvalidoException.class, () -> {
 			this.numeroCpf = null;
-			new FuncionarioBuilder(this.numeroCpf, this.nome);
+			new FuncionarioBuilder(this.numeroCpf, this.nome, this.senha, this.codificador);
 		});
 	}
 	
@@ -98,7 +118,15 @@ public class FuncionarioBuilderTeste {
 	public void construtor_nomeNulo_retornoException() {
 		Assert.assertThrows(NomeInvalidoException.class, () -> {
 			this.nome = null;
-			new FuncionarioBuilder(this.numeroCpf, this.nome);
+			new FuncionarioBuilder(this.numeroCpf, this.nome, this.senha, this.codificador);
+		});
+	}
+	
+	@Test
+	public void construtor_senhaNula_retornoException() {
+		Assert.assertThrows(SenhaInvalidaException.class, () -> {
+			this.senha = null;
+			new FuncionarioBuilder(this.numeroCpf, this.nome, this.senha, this.codificador);
 		});
 	}
 	
