@@ -1,29 +1,17 @@
 package empresaA.infraestrutura.util;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.Map;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
+import empresaA.infraestrutura.conexaoComBanco.ConexaoComMySQL;
 import empresaA.infraestrutura.util.exception.BuscaTelefoneException;
 
 public class BuscaTelefoneComJDBCTeste {
 
-	private static Connection conexao;
-
-	@BeforeClass
-	public static void configuracoesIniciais() {
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			conexao = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/empresaA?useTimezone=true&serverTimezone=UTC", "root", "123456");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	private static Connection conexao = new ConexaoComMySQL().cria();
 
 	@Test
 	public void executa_tudoValido_retornoOk() {
