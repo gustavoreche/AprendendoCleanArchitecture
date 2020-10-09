@@ -1,9 +1,11 @@
 package empresaA.infraestrutura.util;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import empresaA.dominio.funcionario.Funcionario;
 import empresaA.infraestrutura.bancoDeDados.ConexaoComBancoDeDadosParaTestesComMock;
@@ -16,6 +18,11 @@ public class DeletaTelefoneComJDBCComMockTeste extends ConexaoComBancoDeDadosPar
 	@BeforeClass
 	public static void configuraMocks() {
 		funcionario = Mockito.mock(Funcionario.class);
+	}
+	
+	@Before
+	public void iniciaAntesDeCadaTeste() {
+		MockitoAnnotations.initMocks(this);
 	}
 	
 	@Test

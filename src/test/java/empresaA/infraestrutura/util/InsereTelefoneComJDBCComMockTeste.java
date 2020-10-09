@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import empresaA.dominio.funcionario.Funcionario;
 import empresaA.dominio.util.Telefone;
@@ -24,6 +26,11 @@ public class InsereTelefoneComJDBCComMockTeste extends ConexaoComBancoDeDadosPar
 		listaDeTelefone.add(Mockito.mock(Telefone.class));
 		listaDeTelefone.add(Mockito.mock(Telefone.class));
 		Mockito.doReturn(listaDeTelefone).when(funcionario).getTelefones();
+	}
+	
+	@Before
+	public void iniciaAntesDeCadaTeste() {
+		MockitoAnnotations.initMocks(this);
 	}
 
 	@Test
