@@ -1,12 +1,12 @@
-package empresaA.infraestrutura.conexaoComBanco;
+package empresaA.infraestrutura.bancoDeDados;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-import empresaA.dominio.conexaoComBanco.Conexao;
+import empresaA.dominio.conexaoComBanco.ConexaoComBancoDeDados;
 import empresaA.dominio.conexaoComBanco.exception.ErroDeConexaoException;
 
-public class ConexaoComMySQL implements Conexao {
+public class ConexaoComMySQL implements ConexaoComBancoDeDados {
 
 	@Override
 	public Connection cria() {

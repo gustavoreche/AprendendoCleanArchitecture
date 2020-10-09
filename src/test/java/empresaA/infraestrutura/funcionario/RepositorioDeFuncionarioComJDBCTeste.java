@@ -1,27 +1,23 @@
 package empresaA.infraestrutura.funcionario;
 
-import java.sql.Connection;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import empresaA.dominio.funcionario.Funcionario;
 import empresaA.dominio.funcionario.FuncionarioBuilder;
-import empresaA.infraestrutura.conexaoComBanco.ConexaoComMySQL;
+import empresaA.infraestrutura.bancoDeDados.ConexaoComBancoDeDadosParaTestes;
 import empresaA.infraestrutura.funcionario.exception.BuscaFuncionarioException;
 import empresaA.infraestrutura.funcionario.exception.ContrataFuncionarioException;
 import empresaA.infraestrutura.funcionario.exception.DemiteFuncionarioException;
 
-public class RepositorioDeFuncionarioComJDBCTeste {
-	
-	private static Connection conexao = new ConexaoComMySQL().cria();
+public class RepositorioDeFuncionarioComJDBCTeste extends ConexaoComBancoDeDadosParaTestes {
 	
 	private RepositorioDeFuncionarioComJDBC repositorio;
 	
 	@Before
 	public void iniciaAntesDeCadaTeste() {
-		this.repositorio = new RepositorioDeFuncionarioComJDBC(conexao);		
+		this.repositorio = new RepositorioDeFuncionarioComJDBC(super.pegaConexao());		
 	}
 	
 	@Test

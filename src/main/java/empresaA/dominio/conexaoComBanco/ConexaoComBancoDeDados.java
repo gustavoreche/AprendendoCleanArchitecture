@@ -2,7 +2,7 @@ package empresaA.dominio.conexaoComBanco;
 
 import java.sql.Connection;
 
-public interface Conexao {
+public interface ConexaoComBancoDeDados {
 	
 	Connection cria();
 

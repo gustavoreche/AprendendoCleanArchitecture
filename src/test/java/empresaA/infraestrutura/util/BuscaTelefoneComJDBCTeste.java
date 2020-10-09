@@ -1,26 +1,23 @@
 package empresaA.infraestrutura.util;
 
-import java.sql.Connection;
 import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import empresaA.infraestrutura.conexaoComBanco.ConexaoComMySQL;
+import empresaA.infraestrutura.bancoDeDados.ConexaoComBancoDeDadosParaTestes;
 import empresaA.infraestrutura.util.exception.BuscaTelefoneException;
 
-public class BuscaTelefoneComJDBCTeste {
-
-	private static Connection conexao = new ConexaoComMySQL().cria();
-
+public class BuscaTelefoneComJDBCTeste extends ConexaoComBancoDeDadosParaTestes {
+	
 	@Test
 	public void executa_tudoValido_retornoOk() {
-		Assert.assertNotNull(new BuscaTelefoneComJDBC(conexao).executa("111.111.111-18"));
+		Assert.assertNotNull(new BuscaTelefoneComJDBC(super.pegaConexao()).executa("111.111.111-18"));
 	}
 
 	@Test
 	public void executa_semCpf_retornoVazio() {
-		Map<String, String> listaDeDddENumero = new BuscaTelefoneComJDBC(conexao).executa(null);
+		Map<String, String> listaDeDddENumero = new BuscaTelefoneComJDBC(super.pegaConexao()).executa(null);
 		Assert.assertTrue(listaDeDddENumero != null && listaDeDddENumero.isEmpty());
 	}
 

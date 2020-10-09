@@ -5,7 +5,7 @@ import java.sql.Connection;
 import org.junit.Assert;
 import org.junit.Test;
 
-import empresaA.infraestrutura.conexaoComBanco.ConexaoComMySQL;
+import empresaA.infraestrutura.bancoDeDados.ConexaoComMySQL;
 import empresaA.infraestrutura.funcionario.RepositorioDeFuncionarioComJDBC;
 
 public class ContrataFuncionarioTeste {
