@@ -19,35 +19,27 @@ import empresaA.infraestrutura.indicacao.exception.EnviaEmailException;
 public class EnviarEmailDeIndicacaoComJavaMail implements EnviarEmailDeIndicacao {
 	
 	private static final String EMAIL_PARA_ENVIAR = "seuamigo@teste.com";
+	protected static final String ASSUNTO_DO_EMAIL = "Enviando email com JavaMail";
+	
+	private String assunto;
 
 	@Override
 	public void enviaPara(Funcionario funcionario) {
-		Session sessao = Session.getDefaultInstance(criaConfiguracaoDoServidorDeEmail(), insereDadosDoEmailQueEnviaraOsDados());
+		Session sessao = criaSessaoDeEmail();
 		sessao.setDebug(true);
 		try {
-			Transport.send(criaMensagemDeEmail(sessao, funcionario));
+			Message mensagemDoEmail = criaMensagemDeEmail(funcionario, sessao);
+			enviaEmail(mensagemDoEmail);
 		} catch (Exception e) {
 			throw new EnviaEmailException(e.getMessage());
 		}
 	}
-
-	private Message criaMensagemDeEmail(Session sessao, Funcionario funcionario) throws MessagingException, AddressException {
-		Message mensagem = new MimeMessage(sessao);
-		mensagem.setFrom(new InternetAddress(ConfigurarEnviadorDeEmailJavaMail.EMAIL));
-
-		Address[] toUser = InternetAddress.parse(EMAIL_PARA_ENVIAR);
-
-		mensagem.setRecipients(Message.RecipientType.TO, toUser);
-		mensagem.setSubject("Enviando email com JavaMail");
-		mensagem.setText("Seja bem vindo " + funcionario.getNome());
-		return mensagem;
+	
+	protected Session criaSessaoDeEmail() {
+		return Session.getDefaultInstance(criaConfiguracaoDoServidorDeEmail(), insereDadosDoEmailQueEnviaraOsDados());
 	}
-
-	private Authenticator insereDadosDoEmailQueEnviaraOsDados() {
-		return new ConfigurarEnviadorDeEmailJavaMail();
-	}
-
-	private Properties criaConfiguracaoDoServidorDeEmail() {
+	
+	protected Properties criaConfiguracaoDoServidorDeEmail() {
 		Properties configuracao = new Properties();
 		configuracao.put("mail.smtp.host", "smtp.gmail.com");
 		configuracao.put("mail.smtp.socketFactory.port", "465");
@@ -55,6 +47,31 @@ public class EnviarEmailDeIndicacaoComJavaMail implements EnviarEmailDeIndicacao
 		configuracao.put("mail.smtp.auth", "true");
 		configuracao.put("mail.smtp.port", "465");
 		return configuracao;
+	}
+	
+	protected Authenticator insereDadosDoEmailQueEnviaraOsDados() {
+		return new ConfigurarEnviadorDeEmailJavaMail();
+	}
+
+	protected void enviaEmail(Message mensagemDoEmail) throws MessagingException, AddressException {
+		Transport.send(mensagemDoEmail);
+	}
+
+	protected Message criaMensagemDeEmail(Funcionario funcionario, Session sessao) throws MessagingException, AddressException {
+		Message mensagem = new MimeMessage(sessao);
+		mensagem.setFrom(new InternetAddress(ConfigurarEnviadorDeEmailJavaMail.EMAIL));
+
+		Address[] toUser = InternetAddress.parse(EMAIL_PARA_ENVIAR);
+
+		mensagem.setRecipients(Message.RecipientType.TO, toUser);
+		mensagem.setSubject(ASSUNTO_DO_EMAIL);
+		this.assunto = ASSUNTO_DO_EMAIL;
+		mensagem.setText("Seja bem vindo " + funcionario.getNome());
+		return mensagem;
+	}
+	
+	protected String getAssunto() {
+		return this.assunto;
 	}
 
 }
