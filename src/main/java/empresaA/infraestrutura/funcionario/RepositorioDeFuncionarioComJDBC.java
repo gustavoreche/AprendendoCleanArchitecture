@@ -18,12 +18,15 @@ import empresaA.infraestrutura.funcionario.exception.ContrataFuncionarioExceptio
 import empresaA.infraestrutura.funcionario.exception.DemiteFuncionarioException;
 import empresaA.infraestrutura.util.AcaoTelefone;
 import empresaA.infraestrutura.util.BuscaTelefoneComJDBC;
-import empresaA.infraestrutura.util.DeletaTelefoneComJDBC;
-import empresaA.infraestrutura.util.InsereTelefoneComJDBC;
+import empresaA.infraestrutura.util.EnumAcaoTelefone;
 
 public class RepositorioDeFuncionarioComJDBC implements RepositorioDeFuncionario {
 	
 	private Connection conexao;
+	
+	protected RepositorioDeFuncionarioComJDBC() {
+
+	}
 
 	public RepositorioDeFuncionarioComJDBC(Connection conexao) {
 		this.conexao = conexao;
@@ -33,7 +36,7 @@ public class RepositorioDeFuncionarioComJDBC implements RepositorioDeFuncionario
 	public boolean contrata(Funcionario funcionario) {
 		int posicao = 1;
 		StringBuilder sql = new StringBuilder("INSERT INTO funcionario VALUES (?, ?, ?, ?)");
-		try(PreparedStatement statement = this.conexao.prepareStatement(sql.toString())) {
+		try(PreparedStatement statement = pegaConexao().prepareStatement(sql.toString())) {
 			statement.setString(posicao++, funcionario.getCpf());
 			statement.setString(posicao++, funcionario.getNome());
 			statement.setString(posicao++, funcionario.getEmail());
@@ -41,14 +44,22 @@ public class RepositorioDeFuncionarioComJDBC implements RepositorioDeFuncionario
 			if(!insereNoBanco(statement)) {
 				return false;
 			}
-			return verificaSeTemTelefone(funcionario, new InsereTelefoneComJDBC(this.conexao));
+			return verificaSeTemTelefone(funcionario, defineAcaoTelefone(EnumAcaoTelefone.INSERE));
 		} catch (Exception e) {
 			throw new ContrataFuncionarioException(e.getMessage());
 		}
 	}
+	
+	protected Connection pegaConexao() {
+		return this.conexao;
+	}
 
 	private boolean insereNoBanco(PreparedStatement statement) throws SQLException {
 		return statement.executeUpdate() == 1;
+	}
+	
+	protected AcaoTelefone defineAcaoTelefone(EnumAcaoTelefone acao) {
+		return acao.pegaAcao(acao, pegaConexao());
 	}
 
 	private boolean verificaSeTemTelefone(Funcionario funcionario, AcaoTelefone acaoTelefone) {
@@ -61,12 +72,12 @@ public class RepositorioDeFuncionarioComJDBC implements RepositorioDeFuncionario
 	public boolean demite(Funcionario funcionario) {
 		int posicao = 1;
 		String sql = "DELETE FROM funcionario WHERE cpf = ?";
-		try(PreparedStatement statement = this.conexao.prepareStatement(sql)) {
+		try(PreparedStatement statement = pegaConexao().prepareStatement(sql)) {
 			statement.setString(posicao++, funcionario.getCpf());
 			if(!deletaNoBanco(statement)) {
 				return false;
 			}
-			return verificaSeTemTelefone(funcionario, new DeletaTelefoneComJDBC(this.conexao));
+			return verificaSeTemTelefone(funcionario, defineAcaoTelefone(EnumAcaoTelefone.DELETA));
 		} catch (Exception e) {
 			throw new DemiteFuncionarioException(e.getMessage());
 		}
@@ -80,7 +91,7 @@ public class RepositorioDeFuncionarioComJDBC implements RepositorioDeFuncionario
 	public Funcionario buscaPorCpf(String cpf) {
 		int posicao = 1;
 		String sql = "SELECT * FROM funcionario WHERE cpf = ?";
-		try(PreparedStatement statement = this.conexao.prepareStatement(sql)) {
+		try(PreparedStatement statement = pegaConexao().prepareStatement(sql)) {
 			statement.setString(posicao++, cpf);
 			ResultSet resultadoDaQuery = statement.executeQuery();
 			if(!resultadoDaQuery.next()) {
@@ -98,12 +109,12 @@ public class RepositorioDeFuncionarioComJDBC implements RepositorioDeFuncionario
 		}
 	}
 
-	private FuncionarioBuilder criaFuncionario(String cpf, String cpfDoBanco, String nome, String email, String senha, CodificadorDeSenha codificador) {
+	protected FuncionarioBuilder criaFuncionario(String cpf, String cpfDoBanco, String nome, String email, String senha, CodificadorDeSenha codificador) {
 		FuncionarioBuilder funcionarioBuilder = new FuncionarioBuilder(cpfDoBanco, nome, senha, codificador);
 		if(!email.isEmpty()) {
 			funcionarioBuilder.adicionaEmail(email);
 		}
-		Map<String, String> listaDeDddETelefone = new BuscaTelefoneComJDBC(this.conexao).executa(cpf);
+		Map<String, String> listaDeDddETelefone = new BuscaTelefoneComJDBC(pegaConexao()).executa(cpf);
 		if(!listaDeDddETelefone.isEmpty()) {
 			for (Entry<String, String> dddENumero : listaDeDddETelefone.entrySet()) {
 				String ddd = dddENumero.getKey();
@@ -119,7 +130,7 @@ public class RepositorioDeFuncionarioComJDBC implements RepositorioDeFuncionario
 		int posicao = 1;
 		List<Funcionario> listaDeFuncionario = new ArrayList<Funcionario>();
 		String sql = "SELECT * FROM funcionario";
-		try(PreparedStatement statement = this.conexao.prepareStatement(sql)) {
+		try(PreparedStatement statement = pegaConexao().prepareStatement(sql)) {
 			ResultSet resultadoDaQuery = statement.executeQuery();
 			while(resultadoDaQuery.next()) {
 				posicao = 1;

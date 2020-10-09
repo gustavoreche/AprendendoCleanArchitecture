@@ -39,9 +39,9 @@ public class ConexaoComBancoDeDadosParaTestesComMock {
 		}
 	}
 	
-	protected void salvaNoBancoMock() {
+	protected void salvaNoBancoMock(EnumSalvaNoBanco salva) {
 		try {
-			Mockito.doReturn(1).when(this.statement).executeUpdate();
+			Mockito.doReturn(salva.getCodigo()).when(this.statement).executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

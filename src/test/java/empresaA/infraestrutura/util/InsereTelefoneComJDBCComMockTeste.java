@@ -13,6 +13,7 @@ import org.mockito.MockitoAnnotations;
 import empresaA.dominio.funcionario.Funcionario;
 import empresaA.dominio.util.Telefone;
 import empresaA.infraestrutura.bancoDeDados.ConexaoComBancoDeDadosParaTestesComMock;
+import empresaA.infraestrutura.bancoDeDados.EnumSalvaNoBanco;
 import empresaA.infraestrutura.util.exception.SalvaTelefoneException;
 
 public class InsereTelefoneComJDBCComMockTeste extends ConexaoComBancoDeDadosParaTestesComMock {
@@ -35,7 +36,7 @@ public class InsereTelefoneComJDBCComMockTeste extends ConexaoComBancoDeDadosPar
 
 	@Test
 	public void executa_tudoValido_retornoOk() {
-		super.salvaNoBancoMock();
+		super.salvaNoBancoMock(EnumSalvaNoBanco.PERSISTE);
 		Assert.assertTrue(new InsereTelefoneComJDBC(super.pegaConexao()).executa(funcionario));
 	}
 	
